@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import json
 
 
 class Runner(object):
@@ -11,6 +12,10 @@ class Runner(object):
 
 
   def load_data(self):
+    #stockerbot_fqp = os.path.expanduser('~/virtual_envs/ml_data/Final/stockerbot-export.csv')
+    dojpress_fqp = os.path.expanduser('~/virtual_envs/ml_data/Final/combined.json')
+    
+    
     return self
 
 

@@ -13,3 +13,23 @@ We plan to apply NLP techniques to extract features from the input text document
 [Stocks](https://www.kaggle.com/timoboz/stock-data-dow-jones)
 
 The first two datasets are rich sources of text data that we hypothesize to have influence on stock prices.  The twitter dataset is a curated and tagged set of 25,000 tweets by verified accounts of people and organizations that report on the finance industry.  The tweets are filtered to instances where the user tweeted about one of 584 companies.  The DOJ dataset includes indictments related to publicly traded companies, we will have to filter out other, unrelated filings.  The target dataset includes daily stock price information for all firms’ stocks that are traded on the dow jones industrial index.
+
+
+TODO:
+1. Determine Industries to focus on
+2. Map Industry to list of stock tickers
+3. Map DOJ Filing to Industry
+4. Check feasibility of mapping DOJ filing to company
+   1. Map Ticker to Full company name and then do simply string includes
+5. Use Google Sheets / Google Finance to get the Daily prices
+   1. =GOOGLEFINANCE("AAPL", "price", "1/1/2018", "12/31/2018", "DAILY")
+   OR USE Google Python API for GoogleFinance
+6. Parse DOJ Dataset into Dataframe
+7. Parse above google sheets results into Dataframe
+8. Is there a stock movement based simply on a mention in the DOJ Filing
+
+
+Models to explore:
+Logistic Regression/Classification
+
+NLP on DOJ entry content using spacy

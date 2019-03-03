@@ -4,3 +4,4 @@ pylint
 scikit-learn
 pandas
 keras
+spacy
