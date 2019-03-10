@@ -99,7 +99,7 @@ Input will be moving average of (T-n) days (ordered by date)
 
 
 For Classification Models
-Input will be 
-  the n columns representing T and [(T-i) for i in range(0, n)] columns (ordered by date)
-  sentiment on title and content?
+Input will be
+- the n columns representing T and [(T-i) for i in range(0, n)] columns (ordered by date)
+- sentiment on title and content?
 
