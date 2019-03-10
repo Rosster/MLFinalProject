@@ -5,3 +5,6 @@ scikit-learn
 pandas
 keras
 spacy
+cleanco
+tqdm
+python-levenshtein
