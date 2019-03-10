@@ -33,3 +33,73 @@ Models to explore:
 Logistic Regression/Classification
 
 NLP on DOJ entry content using spacy
+
+
+---
+
+Following createion of `doj_data_with_tags_and_industries.json`
+
+Use the following:
+```
+date
+title
+clean_orgs
+tagged_symbols
+tagged_companies
+sectors
+industries
+```
+
+
+---
+Predictive Goal
+
+- Normalized Stock Price Movement at T
+- Normalized Stock Price Movement at T-1
+- Normalized Stock Price Movement at T-2
+- Normalized Stock Price Movement at T-3
+
+```
+"Given yesterday's closing price and todays tweets and filings, what is todays closing price"
+```
+
+
+
+Find unique symbols in tagged_symbols  
+group records by symbol 
+  ^^ a little complicated, basically group if symbol in record.tagged_symbols
+
+
+
+If the output will be predicted closing price 
+  --> This must be a regression problem since its continous output
+  Linear Regression
+  Polynomial Fit
+  
+
+
+If we will simply predict whether the closing price will be above or below the opening price 
+  --> then we can run classification models
+
+  Decision Tree
+  Random Forrest
+  Gradient Boosting
+  Logistic Regression (Classifier)
+  Neural Network
+    Squential
+    Recurrent
+  SVC Classifier
+
+
+
+
+For Regression Models 
+Input will be moving average of (T-n) days (ordered by date)
+
+
+
+For Classification Models
+Input will be 
+  the n columns representing T and [(T-i) for i in range(0, n)] columns (ordered by date)
+  sentiment on title and content?
+
