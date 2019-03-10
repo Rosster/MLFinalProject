@@ -7,4 +7,4 @@ keras
 spacy
 cleanco
 tqdm
-python-levenshtein
+leven
