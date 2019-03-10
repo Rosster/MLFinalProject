@@ -17,14 +17,14 @@ The first two datasets are rich sources of text data that we hypothesize to have
 
 TODO:
 1. Determine Industries to focus on
-2. Map Industry to list of stock tickers
-3. Map DOJ Filing to Industry
-4. Check feasibility of mapping DOJ filing to company
+2. Map Industry to list of stock tickers (DONE)
+3. Map DOJ Filing to Industry (DONE)
+4. Check feasibility of mapping DOJ filing to company (DONE)
    1. Map Ticker to Full company name and then do simply string includes
 5. Use Google Sheets / Google Finance to get the Daily prices
    1. =GOOGLEFINANCE("AAPL", "price", "1/1/2018", "12/31/2018", "DAILY")
    OR USE Google Python API for GoogleFinance
-6. Parse DOJ Dataset into Dataframe
+6. Parse DOJ Dataset into Dataframe (DONE)
 7. Parse above google sheets results into Dataframe
 8. Is there a stock movement based simply on a mention in the DOJ Filing
 
