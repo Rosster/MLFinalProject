@@ -73,22 +73,22 @@ group records by symbol
 
 If the output will be predicted closing price 
   --> This must be a regression problem since its continous output
-  Linear Regression
-  Polynomial Fit
+- Linear Regression
+- Polynomial Fit
   
 
 
 If we will simply predict whether the closing price will be above or below the opening price 
   --> then we can run classification models
 
-  Decision Tree
-  Random Forrest
-  Gradient Boosting
-  Logistic Regression (Classifier)
-  Neural Network
-    Squential
-    Recurrent
-  SVC Classifier
+- Decision Tree
+- Random Forrest
+- Gradient Boosting
+- Logistic Regression (Classifier)
+- Neural Network
+  - Squential
+  - Recurrent
+- SVC Classifier
 
 
 
