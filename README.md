@@ -16,7 +16,7 @@ The first two datasets are rich sources of text data that we hypothesize to have
 
 
 TODO:
-1. Determine Industries to focus on (DONE)
+1. Determine Industries to focus on (DONE) [Narrow down to companies that have DOJ related events: if the filing doesn't impact them, it probably doesn't impact anyone else.]
 2. Map Industry to list of stock tickers (DONE)
 3. Map DOJ Filing to Industry (DONE)
 4. Check feasibility of mapping DOJ filing to company (DONE)
@@ -27,8 +27,19 @@ TODO:
 6. Parse DOJ Dataset into Dataframe (DONE)
 7. Parse above google sheets results into Dataframe (DONE)
 8. Is there a stock movement based simply on a mention in the DOJ Filing (DONE)
-9. Narrow down to companies that have DOJ related events: if the filing doesn't impact them, it probably doesn't impact anyone else.
-10. Determine how to add additional regressors to ARIMA model ([ARIMA-X] or [add ARIMA error as regressor alongside non time-series regressors and check it's coefficient i.e. impact on target])
+9. Determine how to add additional regressors to ARIMA model ([ARIMA-X] or [add ARIMA error as regressor alongside non time-series regressors and check it's coefficient i.e. impact on target]) (DONE)
+10. Engineer necessary features for our predictors dataframe:
+- twitter sentimment [David]
+- DOJ sentiment [Rohan]
+- had_twitter_mention (binary):
+*company only, not industry*
+- had_DOJ_mention (binary): *company only, not industry*
+11. David to create time-series regressor(s)
+12. Run KNN, Linear AND Polynomial (degree 2, degree 3), Random Forest regression, and a neural network over predictor DF: time-series vars only.
+13. Run KNN, Linear AND Polynomial (degree 2, degree 3), Random Forest regression, and a neural network over predictor DF: time series+non-time series vars
+14. Measure and write up discussion on differences
+15.Presentation to be completed by Thurs PM
+
 
 Models to explore:
 Logistic Regression/Classification
