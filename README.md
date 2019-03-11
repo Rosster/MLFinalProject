@@ -16,7 +16,7 @@ The first two datasets are rich sources of text data that we hypothesize to have
 
 
 TODO:
-1. Determine Industries to focus on
+1. Determine Industries to focus on (DONE)
 2. Map Industry to list of stock tickers (DONE)
 3. Map DOJ Filing to Industry (DONE)
 4. Check feasibility of mapping DOJ filing to company (DONE)
@@ -25,9 +25,10 @@ TODO:
    1. =GOOGLEFINANCE("AAPL", "price", "1/1/2018", "12/31/2018", "DAILY")
    OR USE Google Python API for GoogleFinance (DONE)
 6. Parse DOJ Dataset into Dataframe (DONE)
-7. Parse above google sheets results into Dataframe
-8. Is there a stock movement based simply on a mention in the DOJ Filing
-
+7. Parse above google sheets results into Dataframe (DONE)
+8. Is there a stock movement based simply on a mention in the DOJ Filing (DONE)
+9. Narrow down to companies that have DOJ related events: if the filing doesn't impact them, it probably doesn't impact anyone else.
+10. Determine how to add additional regressors to ARIMA model ([ARIMA-X] or [add ARIMA error as regressor alongside non time-series regressors and check it's coefficient i.e. impact on target])
 
 Models to explore:
 Logistic Regression/Classification
