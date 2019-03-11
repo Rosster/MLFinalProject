@@ -106,7 +106,7 @@ Time-series model: ARIMA(3,1,3):
 - **I**(1) - differenced 1 time 
 - **MA**(3) - taking into account the stock's 3 day moving average
 
-We test whether adding the sentiment predictors significantly improves the performance of this naive ARIMA model.
+We test whether adding the sentiment predictors significantly improves the performance of this naive ARIMA model by measuring reduction in MSE, if any.
 
 
 For Classification Models
