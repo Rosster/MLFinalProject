@@ -37,7 +37,7 @@ NLP on DOJ entry content using spacy
 
 ---
 
-Following createion of `doj_data_with_tags_and_industries.json`
+Following creation of `doj_data_with_tags_and_industries.json`
 
 Use the following:
 ```
@@ -60,7 +60,7 @@ Predictive Goal
 - Normalized Stock Price Movement at T-3
 
 ```
-"Given yesterday's closing price and todays tweets and filings, what is todays closing price"
+"Given yesterday's closing price and todays tweets and filings, what is todays closing price?"
 ```
 
 
