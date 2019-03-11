@@ -23,7 +23,7 @@ TODO:
    1. Map Ticker to Full company name and then do simply string includes
 5. Use Google Sheets / Google Finance to get the Daily prices
    1. =GOOGLEFINANCE("AAPL", "price", "1/1/2018", "12/31/2018", "DAILY")
-   OR USE Google Python API for GoogleFinance
+   OR USE Google Python API for GoogleFinance (DONE)
 6. Parse DOJ Dataset into Dataframe (DONE)
 7. Parse above google sheets results into Dataframe
 8. Is there a stock movement based simply on a mention in the DOJ Filing
@@ -53,8 +53,11 @@ industries
 
 ---
 Predictive Goal
-
+Target:
 - Normalized Stock Price Movement at T
+
+Predictors:
+
 - Normalized Stock Price Movement at T-1
 - Normalized Stock Price Movement at T-2
 - Normalized Stock Price Movement at T-3
@@ -96,6 +99,14 @@ If we will simply predict whether the closing price will be above or below the o
 For Regression Models 
 Input will be moving average of (T-n) days (ordered by date)
 
+Time-series model: ARIMA(3,1,3):
+
+ - **AR**(3) -
+ 3 days of autocorrelated movements  
+- **I**(1) - differenced 1 time 
+- **MA**(3) - taking into account the stock's 3 day moving average
+
+We test whether adding the sentiment predictors significantly improves the performance of this naive ARIMA model.
 
 
 For Classification Models
