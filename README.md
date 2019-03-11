@@ -27,18 +27,18 @@ TODO:
 6. Parse DOJ Dataset into Dataframe (DONE)
 7. Parse above google sheets results into Dataframe (DONE)
 8. Is there a stock movement based simply on a mention in the DOJ Filing (DONE)
-9. Determine how to add additional regressors to ARIMA model ([ARIMA-X] or [add ARIMA error as regressor alongside non time-series regressors and check it's coefficient i.e. impact on target]) (DONE)
+9. Determine how to add additional regressors to ARIMA model ([ARIMA-X] or [add ARIMA error as regressor alongside non time-series regressors and check it's coefficient i.e. impact on target])[david]
 10. Engineer necessary features for our predictors dataframe:
-- twitter sentimment [David]
+- twitter sentimment [Ross]
 - DOJ sentiment [Rohan]
-- had_twitter_mention (binary):
+- had_twitter_mention (binary)[Ross]:
 *company only, not industry*
-- had_DOJ_mention (binary): *company only, not industry*
-11. David to create time-series regressor(s)
-12. Run KNN, Linear AND Polynomial (degree 2, degree 3), Random Forest regression, and a neural network over predictor DF: time-series vars only.
-13. Run KNN, Linear AND Polynomial (degree 2, degree 3), Random Forest regression, and a neural network over predictor DF: time series+non-time series vars
+- had_DOJ_mention (binary) [Rohan]: *company only, not industry*
+11. Engineer time-series regressors(s) [David]
+12. Run KNN, Linear AND Polynomial (degree 2, degree 3), Random Forest regression, and a neural network over predictor DF: time-series vars only. [David]
+13. Run KNN, Linear AND Polynomial (degree 2, degree 3), Random Forest regression, and a neural network over predictor DF: time series+non-time series vars [david]
 14. Measure and write up discussion on differences
-15.Presentation to be completed by Thurs PM
+15.Presentation to be completed by Thurs PM[all]
 
 
 Models to explore:
