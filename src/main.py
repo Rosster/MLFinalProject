@@ -19,7 +19,7 @@ class Runner(object):
     return self
 
   
-  def build_linear_regression_model(self):
+  def prepare_df(self):
     cols = ['date', 'title', 'clean_orgs', 'tagged_symbols', 'tagged_companies', 'sectors', 'industries']
     
     '''
@@ -27,6 +27,7 @@ class Runner(object):
       date (in ms), symbol, doj_entries, doj_sentiment, sectors, industries,  t-1, t-2, t-3, closing price
 
       response variable is closing price
+      response variable for classification, +25%, +50, +75, -25, -50, -75
     '''
 
     symbols = list(self.stock_df.columns)[1:] # dont include first column, which is date
@@ -63,6 +64,11 @@ class Runner(object):
         output_columns['closing_price'].append(close_price_for_symbol)
 
     return self
+
+
+  def prepare_df_for_classification(self, prepare_df_from_regression):
+    return self
+
 
 
   def end(self):
