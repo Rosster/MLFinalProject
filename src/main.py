@@ -5,6 +5,8 @@ import numpy as np
 import os
 import json
 from datetime import datetime
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.preprocessing import LabelEncoder
 
 
 class Runner(object):
@@ -18,7 +20,7 @@ class Runner(object):
     self.stock_df = pd.read_csv('./data/stock_doj_mention_only.csv')
     return self
 
-  
+
   def prepare_df(self):
     cols = ['date', 'title', 'clean_orgs', 'tagged_symbols', 'tagged_companies', 'sectors', 'industries']
     
@@ -36,8 +38,6 @@ class Runner(object):
       'symbol': [],
       'doj_entries': [],
       'doj_sentiment': [],
-      'sectors': [], 
-      'industries': [],
       't-1': [],
       't-2': [],
       't-3': [],
@@ -50,11 +50,9 @@ class Runner(object):
         close_price_for_symbol = row[symbol]
         output_columns['date'].append(date_ms)
         output_columns['symbol'].append(symbol)
-        output_columns['doj_entries'].append(0)
         
+        output_columns['doj_entries'].append(0) # todo
         output_columns['doj_sentiment'].append(1) # todo
-        output_columns['sectors'].append(1) # todo
-        output_columns['industries'].append(1) # todo
         
         for n in range(1, 4):
           append_historical_closing(
