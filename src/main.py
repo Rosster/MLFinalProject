@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta 
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -17,6 +17,7 @@ class Runner(object):
 
   def load_data(self):
     self.doj_df = pd.read_json('./data/doj_data_with_tags_and_industries.json')
+    self.doj_raw = json.loads(self.doj_df.to_json())
     self.stock_df = pd.read_csv('./data/stock_doj_mention_only.csv')
     return self
 
@@ -45,13 +46,14 @@ class Runner(object):
     }
 
     for index, row in self.stock_df.itertuples():
-      date_ms = date_to_time_in_ms(row['date'])
+      date_obj, date_ms = date_to_time_in_ms(row['date'])
       for symbol in symbols:
         close_price_for_symbol = row[symbol]
         output_columns['date'].append(date_ms)
         output_columns['symbol'].append(symbol)
         
-        output_columns['doj_entries'].append(0) # todo
+        relevant_records_df = self.get_relevent_doj_records(date_obj=date_obj, symbol=symbol)
+        output_columns['doj_entries'].append(len(relevant_records_df))
         output_columns['doj_sentiment'].append(1) # todo
         
         for n in range(1, 4):
@@ -62,6 +64,18 @@ class Runner(object):
         output_columns['closing_price'].append(close_price_for_symbol)
 
     return self
+
+
+
+  def get_relevent_doj_records(self, date_obj, symbol):
+    lower_bound = date_obj.strftime('%Y-%m-%d')
+    upper_bound = (date_obj + timedelta(days=1)).strftime('%Y-%m-%d')
+    date_mask = (self.doj_df['date'] >= lower_bound ) & (self.doj_df['date'] < upper_bound)
+    within_timeframe_df = self.doj_df.loc[date_mask]
+    symbol_mask = within_timeframe_df['tagged_symbols'].apply(lambda x: symbol in x)
+    return within_timeframe_df[symbol_mask]
+    
+
 
 
   def prepare_df_for_classification(self, prepare_df_from_regression):
@@ -77,7 +91,8 @@ class Runner(object):
 
 
 def date_to_time_in_ms(date_str):
-  return int(datetime.strptime(date_str, '%m/%d/%Y').strftime("%s")) * 1000
+  date_obj = datetime.strptime(date_str, '%m/%d/%Y')
+  return date_obj, int(date_obj.strftime("%s")) * 1000
 
 
 def append_historical_closing(n, output_columns, index, close_price_for_symbol):
