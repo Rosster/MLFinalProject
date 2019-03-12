@@ -52,7 +52,7 @@ class Runner(object):
         output_columns['date'].append(date_ms)
         output_columns['symbol'].append(symbol)
         
-        relevant_records_df = self.get_relevent_doj_records(date_obj=date_obj, symbol=symbol)
+        relevant_records_df = self.get_relevant_doj_records(date_obj=date_obj, symbol=symbol)
         output_columns['doj_entries'].append(len(relevant_records_df))
         output_columns['doj_sentiment'].append(1) # todo
         
@@ -67,7 +67,7 @@ class Runner(object):
 
 
 
-  def get_relevent_doj_records(self, date_obj, symbol):
+  def get_relevant_doj_records(self, date_obj, symbol):
     lower_bound = date_obj.strftime('%Y-%m-%d')
     upper_bound = (date_obj + timedelta(days=1)).strftime('%Y-%m-%d')
     date_mask = (self.doj_df['date'] >= lower_bound ) & (self.doj_df['date'] < upper_bound)
