@@ -119,7 +119,7 @@ def date_to_time_in_ms(date_str):
 
 def append_historical_closing(n, output_columns, index, close_price_for_symbol):
   if index - n >= 0:
-    output_columns['t-%s' % n].append(output_columns['closing_price'][index-1])
+    output_columns['t-%s' % n].append(output_columns['closing_price'][index-n])
   else:
     output_columns['t-%s' % n].append(close_price_for_symbol) # ramp up
 
