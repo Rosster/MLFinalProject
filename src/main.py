@@ -24,7 +24,8 @@ class Runner(object):
     return self
 
   def load_prepared_df(self):
-    self.train_df = pd.read_json('./data/./data/prepared_df.json')
+    self.train_df = pd.read_json('./data/prepared_df.json')
+    self.train_df = self.train_df.reset_index()
     return self
 
 
