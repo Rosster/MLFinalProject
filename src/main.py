@@ -16,13 +16,20 @@ class Runner(object):
 
 
   def load_data(self):
-    self.doj_df = pd.read_json('./data/doj_data_with_tags_and_industries.json')
+    self.doj_df = pd.read_json('./data/doj_data_with_tags_and_industries_and_sentiment.json')
     self.doj_raw = json.loads(self.doj_df.to_json())
     self.stock_df = pd.read_csv('./data/stock_doj_mention_only.csv')
+    if not os.path.exists('./data/prepared_df.json'):
+      raise ValueError('Run Runner().load_data().prepare_df() to generate the df')
+    return self
+
+  def load_prepared_df(self):
+    self.train_df = pd.read_json('./data/./data/prepared_df.json')
     return self
 
 
   def prepare_df(self):
+    # call this independently to generate the prepared_df json file
     cols = ['date', 'title', 'clean_orgs', 'tagged_symbols', 'tagged_companies', 'sectors', 'industries']
     
     '''
@@ -32,7 +39,6 @@ class Runner(object):
       response variable is closing price
       response variable for classification, +25%, +50, +75, -25, -50, -75
     '''
-
     symbols = list(self.stock_df.columns)[1:] # dont include first column, which is date
     output_columns = {
       'date': [],
@@ -45,7 +51,10 @@ class Runner(object):
       'closing_price': []
     }
 
-    for index, row in self.stock_df.itertuples():
+    total = len(self.stock_df)
+    for index in range(0, total):
+      print('%d/%d' % (index, total))
+      row = self.stock_df.iloc[index]
       date_obj, date_ms = date_to_time_in_ms(row['date'])
       for symbol in symbols:
         close_price_for_symbol = row[symbol]
@@ -54,7 +63,7 @@ class Runner(object):
         
         relevant_records_df = self.get_relevant_doj_records(date_obj=date_obj, symbol=symbol)
         output_columns['doj_entries'].append(len(relevant_records_df))
-        output_columns['doj_sentiment'].append(1) # todo
+        output_columns['doj_sentiment'].append(self.get_sentiment(relevant_records_df=relevant_records_df))
         
         for n in range(1, 4):
           append_historical_closing(
@@ -63,6 +72,7 @@ class Runner(object):
           )
         output_columns['closing_price'].append(close_price_for_symbol)
 
+    self.train_df = pd.DataFrame.from_dict(output_columns)
     return self
 
 
@@ -76,6 +86,18 @@ class Runner(object):
     return within_timeframe_df[symbol_mask]
     
 
+  def get_sentiment(self, relevant_records_df):
+    '''
+      sentiment_neg                                                       0.043
+      sentiment_neu                                                       0.865
+      sentiment_pos                                                       0.092
+    '''
+    sentiments = []
+    for row in relevant_records_df.itertuples():
+      stats = { 0 : getattr(row, 'sentiment_neg'),  0.5: getattr(row, 'sentiment_neu'), 1: getattr(row, 'sentiment_pos')}
+      sentiments.append(max(stats.keys(), key=(lambda key: stats[key])))
+    return np.average(sentiments);
+
 
 
   def prepare_df_for_classification(self, prepare_df_from_regression):
@@ -86,7 +108,6 @@ class Runner(object):
   def end(self):
     now = datetime.now()
     print("Time Elapsed: ", now - self.start)
-
 
 
 
@@ -109,13 +130,14 @@ if __name__ == "__main__":
   #   "python.pythonPath": "/Users/rohanjyoti/virtual_envs/mlenv/bin/python3"
   # To Run: time ~/virtual_envs/mlenv/bin/python3 main.py
   Runner().load_data()\
+          .load_prepared_df()\
           .end()
 
 '''
 from main import Runner
 runner = Runner().load_data()
-
-df = runner.doj
+runner = runner.load_prepared_df()
+df = runner.train_df
 
 
 '''
