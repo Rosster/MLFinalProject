@@ -17,22 +17,34 @@ class Runner(object):
 
   def load_data(self):
     self.doj_df = pd.read_json('./data/doj_data_with_tags_and_industries_and_sentiment.json')
-    self.doj_raw = json.loads(self.doj_df.to_json())
+    self.doj_df = self.doj_df.reset_index()
+
+    self.twitter_df = pd.read_json('./data/twitter_data_with_sentiment.json')
+    self.twitter_df = self.twitter_df.reset_index()
+
     self.stock_df = pd.read_csv('./data/stock_doj_mention_only.csv')
-    if not os.path.exists('./data/prepared_df.json'):
-      raise ValueError('Run Runner().load_data().prepare_df() to generate the df')
+    self.stock_df = self.stock_df.reset_index()
     return self
 
-  def load_prepared_df(self):
-    self.train_df = pd.read_json('./data/prepared_df.json')
+  
+  def generate_prepared_df(self, data_to_look_at):
+    self.data_to_look_at = data_to_look_at
+    if not data_to_look_at:
+      raise ValueError('missing data_to_look_at')
+
+    self.prepare_df()
+    with open('./data/prepared_df_{}.json'.format(data_to_look_at), 'w') as f:
+      f.write(self.train_df.to_json())
+    return self
+
+  def load_prepared_df(self, name):
+    self.train_df = pd.read_json('./data/{}'.format(name))
     self.train_df = self.train_df.reset_index()
     return self
 
 
   def prepare_df(self):
-    # call this independently to generate the prepared_df json file
-    cols = ['date', 'title', 'clean_orgs', 'tagged_symbols', 'tagged_companies', 'sectors', 'industries']
-    
+    # call this independently to generate the prepared_df json file    
     '''
       DF columns
       date (in ms), symbol, doj_entries, doj_sentiment, sectors, industries,  t-1, t-2, t-3, closing price
@@ -43,14 +55,19 @@ class Runner(object):
     symbols = list(self.stock_df.columns)[1:] # dont include first column, which is date
     output_columns = {
       'date': [],
-      'symbol': [],
-      'doj_entries': [],
-      'doj_sentiment': [],
+      'symbol': [], 
       't-1': [],
       't-2': [],
       't-3': [],
       'closing_price': []
     }
+
+    if self.data_to_look_at == 'doj':
+      output_columns['doj_entries'] = []
+      output_columns['doj_sentiment'] = []
+    elif self.data_to_look_at == 'twitter':
+      output_columns['twitter_entries'] = []
+      output_columns['twitter_sentiment'] = []
 
     total = len(self.stock_df)
     for index in range(0, total):
@@ -62,9 +79,14 @@ class Runner(object):
         output_columns['date'].append(date_ms)
         output_columns['symbol'].append(symbol)
         
-        relevant_records_df = self.get_relevant_doj_records(date_obj=date_obj, symbol=symbol)
-        output_columns['doj_entries'].append(len(relevant_records_df))
-        output_columns['doj_sentiment'].append(self.get_sentiment(relevant_records_df=relevant_records_df))
+        if self.data_to_look_at == 'doj':
+          relevant_records_df = self.get_relevant_doj_records(date_obj=date_obj, symbol=symbol)
+          output_columns['doj_entries'].append(len(relevant_records_df))
+          output_columns['doj_sentiment'].append(self.get_sentiment(relevant_records_df=relevant_records_df))
+        elif self.data_to_look_at == 'twitter':
+          relevant_records_df = self.get_relevant_twitter_records(date_obj=date_obj, symbol=symbol)
+          output_columns['twitter_entries'].append(len(relevant_records_df))
+          output_columns['twitter_sentiment'].append(self.get_sentiment(relevant_records_df=relevant_records_df))
         
         for n in range(1, 4):
           append_historical_closing(
@@ -86,6 +108,15 @@ class Runner(object):
     symbol_mask = within_timeframe_df['tagged_symbols'].apply(lambda x: symbol in x)
     return within_timeframe_df[symbol_mask]
     
+
+  def get_relevant_twitter_records(self, date_obj, symbol):
+    lower_bound = date_obj.strftime('%Y-%m-%d')
+    upper_bound = (date_obj + timedelta(days=1)).strftime('%Y-%m-%d')
+    date_mask = (self.twitter_df['timestamp'] >= lower_bound ) & (self.twitter_df['timestamp'] < upper_bound)
+    within_timeframe_df = self.twitter_df.loc[date_mask]
+    symbol_mask = within_timeframe_df['symbols'].apply(lambda x: symbol in x.lower())
+    return within_timeframe_df[symbol_mask]
+
 
   def get_sentiment(self, relevant_records_df):
     '''
@@ -131,13 +162,16 @@ if __name__ == "__main__":
   #   "python.pythonPath": "/Users/rohanjyoti/virtual_envs/mlenv/bin/python3"
   # To Run: time ~/virtual_envs/mlenv/bin/python3 main.py
   Runner().load_data()\
-          .load_prepared_df()\
+          .load_prepared_df('prepared_df_twitter.json')\
           .end()
 
 '''
 from main import Runner
-runner = Runner().load_data()
-runner = runner.load_prepared_df()
+runner = Runner().load_data().generate_prepared_df(data_to_look_at='doj')
+runner2 = Runner().load_data().generate_prepared_df(data_to_look_at='twitter')
+
+runner = Runner().load_data().load_prepared_df('prepared_df_doj.json')
+runner2 = Runner().load_data().load_prepared_df('prepared_df_twitter.json')
 df = runner.train_df
 
 

@@ -126,3 +126,12 @@ Input will be
 - the n columns representing T and [(T-i) for i in range(0, n)] columns (ordered by date)
 - sentiment on title and content?
 
+
+
+
+--- 
+
+IDea
+
+Aggregate on sentiment -> like compound 
+how is the sentiment score predictive of the change in stock price
