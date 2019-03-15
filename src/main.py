@@ -171,8 +171,9 @@ runner = Runner().load_data().generate_prepared_df(data_to_look_at='doj')
 runner2 = Runner().load_data().generate_prepared_df(data_to_look_at='twitter')
 
 runner = Runner().load_data().load_prepared_df('prepared_df_doj.json')
-runner2 = Runner().load_data().load_prepared_df('prepared_df_twitter.json')
 df = runner.train_df
+runner2 = Runner().load_data().load_prepared_df('prepared_df_twitter.json')
+df2 = runner2.train_df
 
 
 '''
