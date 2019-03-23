@@ -55,7 +55,7 @@ df_all = df.merge(
 
 # get symbols that appear across all three datasets
 intersection_list = []
-for x in rnn_preds_df["symbol"]:
+for x in rnn_preds_df["symbol"].unique():
     if x in df["symbol"].unique() and x in df2["symbol"].unique():
         intersection_list.append(x)
 
